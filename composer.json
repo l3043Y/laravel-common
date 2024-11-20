@@ -73,7 +73,7 @@
     "extra": {
         "laravel": {
             "providers": [
-              "CommonServiceProvider"
+              "l3043y\\Common\\CommonServiceProvider"
             ],
             "aliases": {
                 "Common": "Common"
