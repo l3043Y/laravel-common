@@ -16,7 +16,7 @@ class CommonServiceProvider extends PackageServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
         $package
-            ->name('bss-http')
+            ->name('common')
             ->hasConfigFile()
             ->hasInstallCommand(function (InstallCommand $command) {
                 $command
