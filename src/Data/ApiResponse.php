@@ -91,7 +91,8 @@ class ApiResponse extends Data
 
     public function toResponse($request): JsonResponse
     {
-        return parent::toResponse($request);
+        $response = parent::toResponse($request);
+        return response()->json($response->original,$this->code);
     }
 
     public function toArray(): array
