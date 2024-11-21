@@ -84,7 +84,7 @@ class ApiResponse extends Data
                 ]
             ]);
         } catch (\Throwable $e) {
-            config('bss-http.debug', true) && throw $e;
+            config('common.debug', false) && throw $e;
             return self::create([]);
         }
     }
