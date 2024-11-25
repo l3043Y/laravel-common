@@ -4,10 +4,10 @@ namespace l3043y\Common\Data;
 
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Database\Query\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Optional;
 use Throwable;
@@ -26,10 +26,9 @@ class ApiResponse extends Data
 
     }
 
-    public static function createPagination(Model|Builder $model): self
+    public static function fromPaginator(LengthAwarePaginator $paginator): self
     {
-        $paginator = $model->paginate(15)->withQueryString();
-        $payload = $paginator->items();
+        $paginator = $paginator->withQueryString();
         return self::create([
             'code' => 200,
             'data' => $paginator->items(),
