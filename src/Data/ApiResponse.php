@@ -3,6 +3,8 @@
 namespace l3043y\Common\Data;
 
 use GuzzleHttp\Psr7\Response;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\JsonResponse;
@@ -22,6 +24,22 @@ class ApiResponse extends Data
     )
     {
 
+    }
+
+    public static function createPagination(Model|Builder $model): self
+    {
+        $paginator = $model->paginate(15)->withQueryString();
+        $payload = $paginator->items();
+        return self::create([
+            'code' => 200,
+            'data' => $paginator->items(),
+            'meta' => [
+                'per_page' => $paginator->perPage(),
+                'current_page' => $paginator->currentPage(),
+                'last_page' => $paginator->lastPage(),
+                'total' => $paginator->total(),
+            ]
+        ]);
     }
 
     public static function create(array $payload): self
@@ -92,16 +110,16 @@ class ApiResponse extends Data
     public function toResponse($request): JsonResponse
     {
         $response = parent::toResponse($request);
-        return response()->json($response->original,$this->code);
+        return response()->json($response->original, $this->code);
     }
 
     public function toArray(): array
     {
         $array = parent::toArray();
-        if(isset($array['code'])) {
+        if (isset($array['code'])) {
             unset($array['code']);
         }
-        if(isset($array['message'])) {
+        if (isset($array['message'])) {
             unset($array['message']);
         }
         $status = isset($this->message) ? "{$this->code} {$this?->message}" : $this->code;
