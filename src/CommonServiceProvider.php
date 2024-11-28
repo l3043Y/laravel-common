@@ -26,5 +26,10 @@ class CommonServiceProvider extends PackageServiceProvider
 
     public function packageRegistered()
     {
+        $this->app->booted(function () {
+            If (config('common.force_https')) {
+                \URL::forceScheme('https');
+            }
+        });
     }
 }
